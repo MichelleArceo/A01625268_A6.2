@@ -100,3 +100,68 @@ class ReservationService:
         return self.get_hotel(hotel_id)
 
    
+
+    # ---------------- Customers ----------------
+    def create_customer(self, cust: Customer) -> None:
+        customers = self.store.load_customers()
+        by_id = _idx(customers, "customer_id")
+        if cust.customer_id in by_id:
+            raise ConflictError("Customer already exists.")
+        customers.append(cust.to_dict())
+        self.store.save_customers(customers)
+
+    def get_customer(self, customer_id: str) -> Customer:
+        if not isinstance(customer_id, str) or not customer_id.strip():
+            raise ValidationError("customer_id must be a non-empty string.")
+        customers = self.store.load_customers()
+        by_id = _idx(customers, "customer_id")
+        if customer_id not in by_id:
+            raise NotFoundError("Customer not found.")
+        return Customer.from_dict(by_id[customer_id])
+
+    def delete_customer(self, customer_id: str) -> None:
+        if not isinstance(customer_id, str) or not customer_id.strip():
+            raise ValidationError("customer_id must be a non-empty string.")
+        customers = self.store.load_customers()
+        before = len(customers)
+        customers = [c for c in customers if c.get("customer_id") != customer_id]
+        if len(customers) == before:
+            raise NotFoundError("Customer not found.")
+
+        # Remove linked reservations to keep storage consistent
+        res = self.store.load_reservations()
+        res = [r for r in res if r.get("customer_id") != customer_id]
+
+        self.store.save_customers(customers)
+        self.store.save_reservations(res)
+
+    def update_customer(
+        self,
+        customer_id: str,
+        *,
+        name_full: Optional[str] = None,
+        email: Optional[str] = None,
+    ) -> Customer:
+        customers = self.store.load_customers()
+        updated: List[dict] = []
+        found = False
+
+        for it in customers:
+            if it.get("customer_id") != customer_id:
+                updated.append(it)
+                continue
+
+            found = True
+            patched = dict(it)
+            if name_full is not None:
+                patched["name_full"] = name_full
+            if email is not None:
+                patched["email"] = email
+
+            c = Customer.from_dict(patched)  # validates
+            updated.append(c.to_dict())
+
+        if not found:
+            raise NotFoundError("Customer not found.")
+        self.store.save_customers(updated)
+        return self.get_customer(customer_id)
