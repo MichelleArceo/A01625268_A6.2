@@ -32,7 +32,10 @@ class Reservation:
         if d_out <= d_in:
             raise ValidationError("check_out must be after check_in.")
 
-        if self.room_no is not None and (not isinstance(self.room_no, int) or self.room_no <= 0):
+        if self.room_no is not None and (
+            (not isinstance(self.room_no, int))
+            or (self.room_no <= 0)
+        ):
             raise ValidationError("room_no must be a positive integer if provided.")
 
     def to_dict(self) -> Dict[str, Any]:

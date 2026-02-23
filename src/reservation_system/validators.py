@@ -28,5 +28,6 @@ def req_iso_date(val: str, field: str) -> str:
     try:
         date.fromisoformat(val)
     except ValueError as exc:
-        raise ValidationError(f"{field} must be ISO format YYYY-MM-DD.") from exc
+        msg = "{field} must be ISO format YYYY-MM-DD.".format(field=field)
+        raise ValidationError(msg) from exc
     return val

@@ -19,7 +19,11 @@ class Customer:
         req_str(self.customer_id, "customer_id")
         req_str(self.name_full, "name_full")
         req_str(self.email, "email")
-        if "@" not in self.email or self.email.startswith("@") or self.email.endswith("@"):
+        if (
+            "@" not in self.email
+            or self.email.startswith("@")
+            or self.email.endswith("@")
+        ):
             raise ValidationError("email must look like a valid email address.")
 
     def to_dict(self) -> Dict[str, Any]:

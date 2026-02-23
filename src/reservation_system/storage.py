@@ -25,10 +25,12 @@ def _read_json_safe(path: str) -> Any:
                 return []
             return json.loads(raw)
     except json.JSONDecodeError as exc:
-        print(f"[ERROR] Invalid JSON in {path}: {exc}")
+        msg = "[ERROR] Invalid JSON in {}: {}".format(path, exc)
+        print(msg)
         return []
     except OSError as exc:
-        raise StorageError(f"Failed reading {path}: {exc}") from exc
+        msg = "Failed reading {}: {}".format(path, exc)
+        raise StorageError(msg) from exc
 
 
 def _write_json_safe(path: str, data: Any) -> None:
@@ -40,7 +42,8 @@ def _write_json_safe(path: str, data: Any) -> None:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
     except OSError as exc:
-        raise StorageError(f"Failed writing {path}: {exc}") from exc
+        msg = "Failed writing {}: {}".format(path, exc)
+        raise StorageError(msg) from exc
 
 
 @dataclass(frozen=True, slots=True)

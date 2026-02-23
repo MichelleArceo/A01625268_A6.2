@@ -19,7 +19,8 @@ def _idx(items: List[dict], key: str) -> Dict[str, dict]:
         if isinstance(val, str) and val.strip():
             out[val.strip()] = it
         else:
-            print(f"[ERROR] Skipping record with invalid {key}: {it}")
+            msg = "[ERROR] Skipping record with invalid {}: {}".format(key, it)
+            print(msg)
     return out
 
 
@@ -99,7 +100,6 @@ class ReservationService:
         self.store.save_hotels(updated)
         return self.get_hotel(hotel_id)
 
-   
 
     # ---------------- Customers ----------------
     def create_customer(self, cust: Customer) -> None:
