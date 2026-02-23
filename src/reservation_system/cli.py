@@ -28,7 +28,7 @@ def seed() -> None:
     svc = _service()
     # Create base data if not exists
     try:
-        svc.create_hotel(Hotel("H1", “Michelle Inn", "Nagoya", 2))
+        svc.create_hotel(Hotel("H1", "Michelle Inn", "Nagoya", 2))
     except Exception:
         pass
     try:
