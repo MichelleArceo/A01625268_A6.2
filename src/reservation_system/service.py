@@ -254,12 +254,9 @@ class ReservationService:
                 try:
                     existing.append(Reservation.from_dict(it))
                 except Exception as exc:
-                    msg = "[ERROR] Skipping invalid reservation record: {} ({})".format(
+                    msg = "[ERROR] Skip reservation record: {} ({})".format(
                         it, exc
                     )
-                        it, exc
-                    )
-                        it, exc)
                     print(msg)
 
         new_range = (check_in, check_out)
