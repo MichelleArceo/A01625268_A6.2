@@ -165,3 +165,96 @@ class ReservationService:
             raise NotFoundError("Customer not found.")
         self.store.save_customers(updated)
         return self.get_customer(customer_id)
+
+    # ---------------- Reservations ----------------
+    def create_reservation(self, resv: Reservation) -> Reservation:
+        # Ensure hotel and customer exist
+        _ = self.get_hotel(resv.hotel_id)
+        _ = self.get_customer(resv.customer_id)
+
+        res_list = self.store.load_reservations()
+        by_id = _idx(res_list, "resv_id")
+        if resv.resv_id in by_id:
+            raise ConflictError("Reservation already exists.")
+
+        room_no = resv.room_no
+        if room_no is None:
+            room_no = self._find_room(resv.hotel_id, resv.check_in, resv.check_out)
+
+        hotel = self.get_hotel(resv.hotel_id)
+        if room_no < 1 or room_no > hotel.rooms_total:
+            raise ValidationError("room_no is out of hotel room range.")
+
+        if self._room_busy(resv.hotel_id, room_no, resv.check_in, resv.check_out):
+            raise ConflictError("Room is not available for those dates.")
+
+        created = Reservation(
+            resv_id=resv.resv_id,
+            hotel_id=resv.hotel_id,
+            customer_id=resv.customer_id,
+            check_in=resv.check_in,
+            check_out=resv.check_out,
+            room_no=room_no,
+        )
+        res_list.append(created.to_dict())
+        self.store.save_reservations(res_list)
+        return created
+
+    def cancel_reservation(self, resv_id: str) -> None:
+        if not isinstance(resv_id, str) or not resv_id.strip():
+            raise ValidationError("resv_id must be a non-empty string.")
+        res_list = self.store.load_reservations()
+        before = len(res_list)
+        res_list = [r for r in res_list if r.get("resv_id") != resv_id]
+        if len(res_list) == before:
+            raise NotFoundError("Reservation not found.")
+        self.store.save_reservations(res_list)
+
+    def reserve_room(
+        self,
+        resv_id: str,
+        hotel_id: str,
+        customer_id: str,
+        check_in: str,
+        check_out: str,
+        room_no: Optional[int] = None,
+    ) -> Reservation:
+        """Convenience wrapper to match 'Reserve a Room' requirement."""
+        resv = Reservation(
+            resv_id=resv_id,
+            hotel_id=hotel_id,
+            customer_id=customer_id,
+            check_in=check_in,
+            check_out=check_out,
+            room_no=room_no,
+        )
+        return self.create_reservation(resv)
+
+    def _room_busy(
+        self,
+        hotel_id: str,
+        room_no: int,
+        check_in: str,
+        check_out: str,
+    ) -> bool:
+        raw = self.store.load_reservations()
+        existing: List[Reservation] = []
+        for it in raw:
+            if it.get("hotel_id") == hotel_id and it.get("room_no") == room_no:
+                try:
+                    existing.append(Reservation.from_dict(it))
+                except Exception as exc:
+                    print(f"[ERROR] Skipping invalid reservation record: {it} ({exc})")
+
+        new_range = (check_in, check_out)
+        for r in existing:
+            if _overlap(new_range, (r.check_in, r.check_out)):
+                return True
+        return False
+
+    def _find_room(self, hotel_id: str, check_in: str, check_out: str) -> int:
+        hotel = self.get_hotel(hotel_id)
+        for rn in range(1, hotel.rooms_total + 1):
+            if not self._room_busy(hotel_id, rn, check_in, check_out):
+                return rn
+        raise ConflictError("No rooms available for those dates.")
