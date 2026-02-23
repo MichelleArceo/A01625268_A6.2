@@ -11,7 +11,6 @@ from .hotel import Hotel
 from .reservation import Reservation
 from .storage import JsonStore
 
-
 def _idx(items: List[dict], key: str) -> Dict[str, dict]:
     out: Dict[str, dict] = {}
     for it in items:
@@ -23,12 +22,10 @@ def _idx(items: List[dict], key: str) -> Dict[str, dict]:
             print(msg)
     return out
 
-
 def _overlap(a: Tuple[str, str], b: Tuple[str, str]) -> bool:
     a_s, a_e = a
     b_s, b_e = b
     return a_s < b_e and b_s < a_e
-
 
 @dataclass(slots=True)
 class ReservationService:
@@ -99,7 +96,6 @@ class ReservationService:
             raise NotFoundError("Hotel not found.")
         self.store.save_hotels(updated)
         return self.get_hotel(hotel_id)
-
 
     # ---------------- Customers ----------------
     def create_customer(self, cust: Customer) -> None:

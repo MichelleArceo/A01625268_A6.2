@@ -22,7 +22,11 @@ class TestReservationsHappy(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.svc = make_service(self.tmp.name)
         self.svc.create_hotel(Hotel("H1", "Michelle Inn", "Nagoya", 2))
-        self.svc.create_customer(Customer("C1", "Michelle", "michelle@example.com"))
+        self.svc.create_customer(
+            Customer("C1",
+            "Michelle",
+            "michelle@example.com"),
+        )
 
     def tearDown(self) -> None:
         self.tmp.cleanup()
