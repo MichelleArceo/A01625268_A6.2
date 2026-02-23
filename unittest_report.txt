@@ -1,2 +1,2 @@
-[ERROR] Invalid JSON in /tmp/tmp9lqi_5mn/hotels.json: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+[ERROR] Invalid JSON in /tmp/tmp7cq6ghov/hotels.json: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
 [ERROR] Customers file must be a JSON array. Got: dict
