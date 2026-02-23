@@ -31,8 +31,6 @@ def _overlap(a: Tuple[str, str], b: Tuple[str, str]) -> bool:
 
 
 @dataclass(slots=True)
-
-
 class ReservationService:
     store: JsonStore
 
@@ -257,6 +255,10 @@ class ReservationService:
                     existing.append(Reservation.from_dict(it))
                 except Exception as exc:
                     msg = "[ERROR] Skipping invalid reservation record: {} ({})".format(
+                        it, exc
+                    )
+                        it, exc
+                    )
                         it, exc)
                     print(msg)
 
