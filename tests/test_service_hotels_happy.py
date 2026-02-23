@@ -25,10 +25,10 @@ class TestHotelsHappy(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_create_and_get_hotel(self) -> None:
-        h = Hotel("H1", “Michelle Inn", "Nagoya", 3)
+        h = Hotel("H1", "Michelle Inn", "Nagoya", 3)
         self.svc.create_hotel(h)
         loaded = self.svc.get_hotel("H1")
-        self.assertEqual(loaded.name, “Michelle Inn")
+        self.assertEqual(loaded.name, "Michelle Inn")
 
     def test_update_hotel(self) -> None:
         self.svc.create_hotel(Hotel("H1", "A", "B", 2))

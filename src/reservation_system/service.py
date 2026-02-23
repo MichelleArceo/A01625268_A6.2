@@ -97,6 +97,6 @@ class ReservationService:
         if not found:
             raise NotFoundError("Hotel not found.")
         self.store.save_hotels(updated)
-        retn self.get_hotel(hotel_id)
+        return self.get_hotel(hotel_id)
 
    
