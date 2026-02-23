@@ -26,8 +26,8 @@ class TestReservationsInvalidDateNegative(unittest.TestCase):
         self.svc.create_hotel(Hotel("H1", "Michelle Inn", "Nagoya", 2))
         self.svc.create_customer(
             Customer("C1",
-            "Michelle",
-            "michelle@example.com"),
+                     "Michelle",
+                     "michelle@example.com"),
         )
 
     def tearDown(self) -> None:
@@ -43,4 +43,10 @@ class TestReservationsInvalidDateNegative(unittest.TestCase):
 
     def test_room_out_of_range_rejected(self) -> None:
         with self.assertRaises(ValidationError):
-            self.svc.reserve_room("R3", "H1", "C1", "2026-05-01", "2026-05-03", room_no=99)
+            self.svc.reserve_room(
+                "R3",
+                "H1",
+                "C1",
+                "2026-05-01",
+                "2026-05-03",
+                room_no=99)

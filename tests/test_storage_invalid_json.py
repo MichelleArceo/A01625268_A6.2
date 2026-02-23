@@ -15,7 +15,11 @@ class TestInvalidJson(unittest.TestCase):
             with open(hotels, "w", encoding="utf-8") as f:
                 f.write("{ not valid json }")
 
-            store = JsonStore(StorePaths(hotels=hotels, customers=customers, reservations=reservations))
+            store = JsonStore(
+                StorePaths(
+                    hotels=hotels,
+                    customers=customers,
+                    reservations=reservations))
             items = store.load_hotels()
             self.assertEqual(items, [])
 
@@ -28,7 +32,11 @@ class TestInvalidJson(unittest.TestCase):
             with open(customers, "w", encoding="utf-8") as f:
                 f.write('{"oops": true}')
 
-            store = JsonStore(StorePaths(hotels=hotels, customers=customers, reservations=reservations))
+            store = JsonStore(
+                StorePaths(
+                    hotels=hotels,
+                    customers=customers,
+                    reservations=reservations))
             items = store.load_customers()
             self.assertEqual(items, [])
 
@@ -38,5 +46,9 @@ class TestInvalidJson(unittest.TestCase):
             customers = os.path.join(tmp, "customers.json")
             reservations = os.path.join(tmp, "reservations.json")
 
-            store = JsonStore(StorePaths(hotels=hotels, customers=customers, reservations=reservations))
+            store = JsonStore(
+                StorePaths(
+                    hotels=hotels,
+                    customers=customers,
+                    reservations=reservations))
             self.assertEqual(store.load_reservations(), [])

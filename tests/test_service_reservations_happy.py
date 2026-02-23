@@ -24,8 +24,8 @@ class TestReservationsHappy(unittest.TestCase):
         self.svc.create_hotel(Hotel("H1", "Michelle Inn", "Nagoya", 2))
         self.svc.create_customer(
             Customer("C1",
-            "Michelle",
-            "michelle@example.com"),
+                     "Michelle",
+                     "michelle@example.com"),
         )
 
     def tearDown(self) -> None:
@@ -63,4 +63,5 @@ class TestReservationsHappy(unittest.TestCase):
             room_no=2,
         )
         self.svc.cancel_reservation("R3")
-        # Cancel again should raise NotFoundError (tested in negative tests later)
+        # Cancel again should raise NotFoundError (tested in negative tests
+        # later)

@@ -24,7 +24,8 @@ class Customer:
             or self.email.startswith("@")
             or self.email.endswith("@")
         ):
-            raise ValidationError("email must look like a valid email address.")
+            raise ValidationError(
+                "email must look like a valid email address.")
 
     def to_dict(self) -> Dict[str, Any]:
         return {

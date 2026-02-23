@@ -32,7 +32,8 @@ class TestCustomersHappy(unittest.TestCase):
 
     def test_update_customer(self) -> None:
         self.svc.create_customer(Customer("C1", "A", "a@x.com"))
-        updated = self.svc.update_customer("C1", name_full="A2", email="a2@x.com")
+        updated = self.svc.update_customer(
+            "C1", name_full="A2", email="a2@x.com")
         self.assertEqual(updated.name_full, "A2")
         self.assertEqual(updated.email, "a2@x.com")
 

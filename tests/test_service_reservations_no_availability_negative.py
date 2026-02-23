@@ -25,8 +25,8 @@ class TestReservationsNoAvailabilityNegative(unittest.TestCase):
         self.svc.create_hotel(Hotel("H1", "Michelle Inn", "Nagoya", 2))
         self.svc.create_customer(
             Customer("C1",
-            "Michelle",
-            "michelle@example.com"),
+                     "Michelle",
+                     "michelle@example.com"),
         )
 
     def tearDown(self) -> None:
@@ -34,8 +34,20 @@ class TestReservationsNoAvailabilityNegative(unittest.TestCase):
 
     def test_no_rooms_available_raises_conflict(self) -> None:
         # Fill both rooms for same dates
-        self.svc.reserve_room("R1", "H1", "C1", "2026-06-01", "2026-06-03", room_no=1)
-        self.svc.reserve_room("R2", "H1", "C1", "2026-06-01", "2026-06-03", room_no=2)
+        self.svc.reserve_room(
+            "R1",
+            "H1",
+            "C1",
+            "2026-06-01",
+            "2026-06-03",
+            room_no=1)
+        self.svc.reserve_room(
+            "R2",
+            "H1",
+            "C1",
+            "2026-06-01",
+            "2026-06-03",
+            room_no=2)
 
         with self.assertRaises(ConflictError):
             self.svc.reserve_room("R3", "H1", "C1", "2026-06-01", "2026-06-03")

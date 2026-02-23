@@ -36,7 +36,8 @@ class Reservation:
             (not isinstance(self.room_no, int))
             or (self.room_no <= 0)
         ):
-            raise ValidationError("room_no must be a positive integer if provided.")
+            raise ValidationError(
+                "room_no must be a positive integer if provided.")
 
     def to_dict(self) -> Dict[str, Any]:
         return {

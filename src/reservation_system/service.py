@@ -11,6 +11,7 @@ from .hotel import Hotel
 from .reservation import Reservation
 from .storage import JsonStore
 
+
 def _idx(items: List[dict], key: str) -> Dict[str, dict]:
     out: Dict[str, dict] = {}
     for it in items:
@@ -22,12 +23,16 @@ def _idx(items: List[dict], key: str) -> Dict[str, dict]:
             print(msg)
     return out
 
+
 def _overlap(a: Tuple[str, str], b: Tuple[str, str]) -> bool:
     a_s, a_e = a
     b_s, b_e = b
     return a_s < b_e and b_s < a_e
 
+
 @dataclass(slots=True)
+
+
 class ReservationService:
     store: JsonStore
 
@@ -252,8 +257,7 @@ class ReservationService:
                     existing.append(Reservation.from_dict(it))
                 except Exception as exc:
                     msg = "[ERROR] Skipping invalid reservation record: {} ({})".format(
-                        it, exc
-                    )
+                        it, exc)
                     print(msg)
 
         new_range = (check_in, check_out)
