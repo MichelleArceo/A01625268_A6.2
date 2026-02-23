@@ -1,0 +1,22 @@
+************* Module reservation_system.storage
+src/reservation_system/storage.py:28:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/reservation_system/storage.py:32:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/reservation_system/storage.py:43:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/reservation_system/storage.py:65:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/reservation_system/storage.py:78:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/reservation_system/storage.py:91:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+************* Module reservation_system.validators
+src/reservation_system/validators.py:31:14: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+************* Module reservation_system.service
+src/reservation_system/service.py:22:18: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+src/reservation_system/service.py:224:4: R0913: Too many arguments (7/5) (too-many-arguments)
+src/reservation_system/service.py:224:4: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
+src/reservation_system/service.py:257:23: W0718: Catching too general exception Exception (broad-exception-caught)
+src/reservation_system/service.py:258:26: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+************* Module reservation_system.cli
+src/reservation_system/cli.py:32:11: W0718: Catching too general exception Exception (broad-exception-caught)
+src/reservation_system/cli.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+------------------------------------------------------------------
+Your code has been rated at 9.62/10 (previous run: 9.78/10, -0.16)
+
