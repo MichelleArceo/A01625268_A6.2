@@ -124,7 +124,9 @@ class ReservationService:
             raise ValidationError("customer_id must be a non-empty string.")
         customers = self.store.load_customers()
         before = len(customers)
-        customers = [c for c in customers if c.get("customer_id") != customer_id]
+        customers = [
+            c for c in customers if c.get("customer_id") != customer_id
+        ]
         if len(customers) == before:
             raise NotFoundError("Customer not found.")
 
@@ -179,13 +181,22 @@ class ReservationService:
 
         room_no = resv.room_no
         if room_no is None:
-            room_no = self._find_room(resv.hotel_id, resv.check_in, resv.check_out)
+            room_no = self._find_room(
+                resv.hotel_id,
+                resv.check_in,
+                resv.check_out,
+            )
 
         hotel = self.get_hotel(resv.hotel_id)
         if room_no < 1 or room_no > hotel.rooms_total:
             raise ValidationError("room_no is out of hotel room range.")
 
-        if self._room_busy(resv.hotel_id, room_no, resv.check_in, resv.check_out):
+        if self._room_busy(
+            resv.hotel_id,
+            room_no,
+            resv.check_in,
+            resv.check_out,
+        ):
             raise ConflictError("Room is not available for those dates.")
 
         created = Reservation(
@@ -244,7 +255,10 @@ class ReservationService:
                 try:
                     existing.append(Reservation.from_dict(it))
                 except Exception as exc:
-                    print(f"[ERROR] Skipping invalid reservation record: {it} ({exc})")
+                    msg = "[ERROR] Skipping invalid reservation record: {} ({})".format(
+                        it, exc
+                    )
+                    print(msg)
 
         new_range = (check_in, check_out)
         for r in existing:

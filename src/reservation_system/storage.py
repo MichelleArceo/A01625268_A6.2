@@ -36,11 +36,9 @@ def _read_json_safe(path: str) -> Any:
 def _write_json_safe(path: str, data: Any) -> None:
     """Write JSON to disk."""
     try:
-        folder = os.path.dirname(path)
-        if folder:
-            os.makedirs(folder, exist_ok=True)
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+            json.dump(data, f, ensure_ascii=False, indent=2)
     except OSError as exc:
         msg = "Failed writing {}: {}".format(path, exc)
         raise StorageError(msg) from exc
@@ -64,7 +62,10 @@ class JsonStore:
         data = _read_json_safe(self._p.hotels)
         if isinstance(data, list):
             return [x for x in data if isinstance(x, dict)]
-        print(f"[ERROR] Hotels file must be a JSON array. Got: {type(data).__name__}")
+        msg = "[ERROR] Hotels file must be a JSON array. Got: {}".format(
+            type(data).__name__
+        )
+        print(msg)
         return []
 
     def save_hotels(self, items: List[Dict[str, Any]]) -> None:
@@ -74,9 +75,10 @@ class JsonStore:
         data = _read_json_safe(self._p.customers)
         if isinstance(data, list):
             return [x for x in data if isinstance(x, dict)]
-        print(
-            f"[ERROR] Customers file must be a JSON array. Got: {type(data).__name__}"
+        msg = "[ERROR] Customers file must be a JSON array. Got: {}".format(
+            type(data).__name__
         )
+        print(msg)
         return []
 
     def save_customers(self, items: List[Dict[str, Any]]) -> None:
@@ -86,10 +88,10 @@ class JsonStore:
         data = _read_json_safe(self._p.reservations)
         if isinstance(data, list):
             return [x for x in data if isinstance(x, dict)]
-        print(
-            "[ERROR] Reservations file must be a JSON array. "
-            f"Got: {type(data).__name__}"
+        msg = "[ERROR] Reservations file must be a JSON array. Got: {}".format(
+            type(data).__name__
         )
+        print(msg)
         return []
 
     def save_reservations(self, items: List[Dict[str, Any]]) -> None:
